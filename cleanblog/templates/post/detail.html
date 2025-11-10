@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+
+{% load static %}
+    <div id="divShow">
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url({{post.picture.url}});">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="post-heading">
+                        <h1>{{post.title}}</h1>
+                        <h5 class="subheading">{{post.briefing}}</h5>
+                        <span class="meta">Posted by {{post.author.name}} on {{post.created_at}} </span> 
+                        {% if post.updated_at %}<span class="meta"> and uptaded on {{post.updated_at}}</span>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <p>{{post.text}}</p>
+                </div>
+                <div class="col-md-10 mx-auto">
+                    <div class="clearfix">
+                        <a href="{% url 'post-list' %}" class="btn btn-secondary float-right col-md-2">Back</a>
+                        <button class="btn btn-warning float-right col-md-2" id="btnEdit">Edit</button>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+<link href="{% static 'css/styles/index.css' %}" rel="stylesheet" type="text/css"/>
+
+<script>
+    $(document).ready(function(){
+        $("#btnEdit").click(() => {
+            window.location.href = "{% url 'post-update' post.id %}";
+        });
+    });
+</script>
+
+    
+{% endblock contents %}
+    
+

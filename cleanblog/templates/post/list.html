@@ -1,0 +1,111 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+{% load static %}
+<div>
+    <header class="masthead" style="background-image: url('{% static 'images/intro.jpg' %}')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1>CleanBlog</h1>
+                        <span class="subheading">A Blog made in Django</span>
+                        <span class="subheading">
+                            <form method="GET">   
+                                <fieldset ng-disabled="status">
+                                    <div class="input-group">
+                                        {% csrf_token %}
+                                        {{form.search}}
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="submit" value="Search">Search</button>
+                                        </span>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <div class="post-preview" id="divTable">
+                    <div id="divTable">
+                        <table id="tablePost" data-page-length="5">
+                            <tbody>
+                                {% for post in posts %}
+                                    <tr>
+                                        <td style="display:none;">{{ post.id }}</td>
+                                        <td>
+                                            <a href="{% url 'post-detail' post.id %}">
+                                                <h2 class="post-title">{{ post.title }}</h2>
+                                                <h6 class="post-subtitle">{{ post.briefing }}</h6>
+                                            </a>
+                                            <p class="post-meta">
+                                                Posted by <a>{{ post.author.name }}</a> on {{ post.created_at }}
+                                                {% if post.updated_at %}
+                                                    <span class="post-meta"> and edited on {{ post.updated_at }}</span>
+                                                {% endif %}
+                                            </p>
+                                            <hr>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+
+                
+                <!-- Pager -->
+                <div class="clearfix">
+                    {% if is_paginated %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?search={{ search }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                            {% endif %}
+        
+                            {% for num in paginator.page_range %}
+                                {% if num == page_obj.number %}
+                                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?search={{ search }}&page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+        
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?search={{ search }}&page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+<link href="{% static 'css/styles/index.css' %}" rel="stylesheet" type="text/css"/>
+
+    
+
+
+{% endblock contents %}
+    

@@ -1,0 +1,39 @@
+{% if request.session.open_modal %}
+    <!-- Modal Info -->
+    <div id="modalInfo" class="modal fade" role="dialog" style="color:black;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="titleModal">Information</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="messageModal">{{request.session.message}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#modalInfo').modal('show');
+            $("#modalInfo").on("hidden.bs.modal", () => {
+                $.ajax({
+                    url: "{% url 'clear-data' %}",
+                    data: {},
+                    method: "POST",
+                    success: () => {
+                    }
+                }).fail(() => {
+                })
+            })
+        });
+    </script>
+{% endif %}
+
+
+
+
+

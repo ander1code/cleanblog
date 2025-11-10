@@ -1,0 +1,24 @@
+{% if form.errors %}
+    <div class="alert alert-danger alert-dismissible" role="alert" id="form-error-alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+        <strong><i class="glyphicon glyphicon-exclamation-sign"></i>Errors found:</strong>
+        <ul class="list-unstyled" style="margin-top: 10px;">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{error}}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $("#form-error-alert").fadeOut(800);
+        }, 5000);
+    });
+    </script>
+{% endif %}
